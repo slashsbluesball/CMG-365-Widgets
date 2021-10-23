@@ -1,0 +1,13 @@
+version: '3.4'
+
+services:
+  parse-log:
+    container_name: parse-log
+    image: parse-log
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    volumes:
+      - "./:/opt/parse_log"
+    command: parse ./logs/example2.log -o test.json
+    user: "${UID}:${GID}"

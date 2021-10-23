@@ -137,8 +137,10 @@ def parse(log, output):
         data[sensor.name] = cq
         print()
 
+    print("Output: ")
+    print(json.dumps(data, indent=2))
     with open(output, "w") as outputfile:
-        json.dump(data, outputfile)
+        json.dump(data, outputfile, indent=2)
 
 
 """ Local usage:
