@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: parse-log-pod
+  labels:
+    app.kubernetes.io/name: parse-log
+    app.kubernetes.io/instance: parse-log-1
+spec:
+  imagePullSecrets:
+    - regcred
+  containers:
+  - name: parse-log
+    image: "parse-log:latest"
+    imagePullPolicy: IfNotPresent
+    restartPolicy: "Never"
+    command: [ "parse", "./logs/example.log" ]
+    securityContext:
+      runAsUser: 5678
+    resources:
+      requests:
+        cpu: 50m
+        memory: 64Mi
+      limits:
+        cpu: 100m
+        memory: 128Mi
+    volumeMounts:
+    - name: parse-log-data
+      mountPath: /opt/parse_log
+  volumes:
+  - name: parse-log-data
+    awsElasticBlockStore:
+      volumeID: "<volume id>"
+      fsType: ext4
+    # hostPath:
+    #   path: /storage/data/parse_log

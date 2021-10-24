@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: parse-log-deploy
+  labels:
+    app.kubernetes.io/name: parse-log
+    app.kubernetes.io/instance: parse-log-1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: parse-log
+      app.kubernetes.io/instance: parse-log-1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: parse-log
+        app.kubernetes.io/instance: parse-log-1
+    spec:
+      imagePullSecrets:
+      - regcred
+      securityContext:
+        runAsUser: 5678
+      containers:
+      - name: parse-log
+        image: "parse-log:latest"
+        imagePullPolicy: IfNotPresent
+        restartPolicy: "Always"
+        command:
+        - "parse"
+        - "./logs/example.log"
+        - "--output export.json"
+        securityContext:
+          runAsNonRoot: true
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 100m
+            memory: 128Mi
+        volumeMounts:
+        - name: parse-log-data
+          mountPath: /opt/parse_log
+      volumes:
+      - name: parse-log-data
+        awsElasticBlockStore:
+          volumeID: "<volume id>"
+          fsType: ext4
