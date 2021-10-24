@@ -199,3 +199,9 @@ Removing parse-log ... done
 Removing network cmg-365-widgets_default
 $
 ```
+
+### Kubernetes
+Apply manifest for pod or deployment against Kubernetes cluster:
+```
+$ kubectl apply -f k8s/deployment.yaml
+```
