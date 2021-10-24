@@ -99,7 +99,8 @@ def get_output_file(output):
     return args.output or constants.DEFAULT_OUTPUT
 
 """
-Function will parse a log file, evaluate quality of a sensors and write their classification into the output file
+Function will parse a log file, evaluate quality of a sensors and write their classification to the standard output
+and json file
 """
 def parse(log, output):
     print("File {} will be parsed and exported to {}".format(log, output))
@@ -144,8 +145,8 @@ def parse(log, output):
 
 
 """ Local usage:
-python3 ./parse_log.py ../logs/example.log
-python3 ./parse_log.py ../logs/example.log --export output.log
+python3 ./app/parse_log.py parse ./logs/example.log
+python3 ./app/parse_log.py parse ./logs/example2.log -o output2.log
 """
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Read the log file, parse its content and save the results in a file.')
